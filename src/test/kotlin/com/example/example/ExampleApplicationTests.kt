@@ -54,7 +54,7 @@ class ExampleApplicationTests {
             exampleService.exampleMethod(param, onSuccess, onError)
 
             verify(exactly = 1) { onSuccess(param) } // it will be run
-            verify(exactly = 0) { onError(param) } // it won't be run
+            verify(exactly = 0) { onError("400") } // it won't be run
         }
     }
 
@@ -83,7 +83,7 @@ class ExampleApplicationTests {
             exampleService.exampleMethod(param, onSuccess, onError)
 
             verify(exactly = 0) { onSuccess(param) } // it won't be run
-            verify(exactly = 1) { onError(param) } // it will be run
+            verify(exactly = 1) { onError("400") } // it will be run
         }
     }
 }

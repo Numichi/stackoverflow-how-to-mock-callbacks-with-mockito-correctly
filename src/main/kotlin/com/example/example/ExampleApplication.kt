@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClient
+import org.springframework.web.reactive.function.client.WebClientResponseException
 
 @SpringBootApplication
 class ExampleApplication
@@ -23,17 +24,20 @@ class ExampleService {
         .build()
 
     suspend fun exampleMethod(param: String, onSuccess: (str: String) -> Unit, onError: (str: String) -> Unit) {
-        val response = client.post()
-            .uri(param)
-            .bodyValue(Data(param))
-            .retrieve()
-            .toEntity(Data::class.java)
-            .awaitSingle() // These await methods not blocking and similar like block()
+        val response = runCatching {
+            client.post()
+                .uri(param)
+                .bodyValue(Data(param))
+                .retrieve()
+                .bodyToMono(Data::class.java)
+                .awaitSingle() // These await methods not blocking and similar like block()
+        }
 
-        if (response.statusCode.is2xxSuccessful) {
+        if (response.isSuccess) {
             onSuccess(param)
         } else {
-            onError(param)
+            val exception = response.exceptionOrNull() as WebClientResponseException?
+            onError(exception?.rawStatusCode.toString())
         }
     }
 }
