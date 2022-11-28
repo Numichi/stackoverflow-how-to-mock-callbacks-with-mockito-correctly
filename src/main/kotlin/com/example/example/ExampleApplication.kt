@@ -23,7 +23,7 @@ class ExampleService {
         .baseUrl("http://localhost:10000") // WireMock will catching this calling in the test
         .build()
 
-    suspend fun exampleMethod(param: String, onSuccess: (str: String) -> Unit, onError: (str: String) -> Unit) {
+    suspend fun exampleMethod(param: String, onSuccess: (str: String) -> String, onError: (str: String) -> String): String {
         val response = runCatching {
             client.post()
                 .uri(param)
@@ -33,7 +33,7 @@ class ExampleService {
                 .awaitSingle() // These await methods not blocking and similar like block()
         }
 
-        if (response.isSuccess) {
+        return if (response.isSuccess) {
             onSuccess(param)
         } else {
             val exception = response.exceptionOrNull() as WebClientResponseException?

@@ -46,10 +46,10 @@ class ExampleApplicationTests {
                     )
             );
 
-            val onSuccess = mockk<(String) -> Unit>()
-            val onError = mockk<(String) -> Unit>()
-            justRun { onSuccess(any()) }
-            justRun { onError(any()) }
+            val onSuccess = mockk<(String) -> String>()
+            val onError = mockk<(String) -> String>()
+            every { onSuccess(any()) } returns "success"
+            every { onError(any()) } returns "400"
 
             exampleService.exampleMethod(param, onSuccess, onError)
 
@@ -75,10 +75,10 @@ class ExampleApplicationTests {
                     )
             );
 
-            val onSuccess = mockk<(String) -> Unit>()
-            val onError = mockk<(String) -> Unit>()
-            justRun { onSuccess(any()) }
-            justRun { onError(any()) }
+            val onSuccess = mockk<(String) -> String>()
+            val onError = mockk<(String) -> String>()
+            every { onSuccess(any()) } returns "success"
+            every { onError(any()) } returns "400"
 
             exampleService.exampleMethod(param, onSuccess, onError)
 

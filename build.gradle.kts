@@ -28,6 +28,7 @@ dependencies {
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
     testImplementation("io.projectreactor:reactor-test")
     testImplementation("com.github.tomakehurst:wiremock-jre8:2.35.0")
+    testImplementation("com.ninja-squad:springmockk:3.1.2")
 }
 
 tasks.withType<KotlinCompile> {
